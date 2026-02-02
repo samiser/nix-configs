@@ -26,7 +26,6 @@
     environment.systemPackages =
       (sharedPackages.desktop {inherit pkgs;})
       ++ (with pkgs; [
-        # Linux-specific GUI and X11 tools
         acpi
         alacritty
         arandr
@@ -43,6 +42,8 @@
         playerctl
         scrot
         xclip
+      ])
+      ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (with pkgs; [
         discord
         spotify
         steam

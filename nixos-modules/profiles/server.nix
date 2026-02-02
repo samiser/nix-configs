@@ -11,7 +11,6 @@
 
     environment.systemPackages = with pkgs; [
       ghostty.terminfo
-      tmux
     ];
 
     users.users.root.openssh.authorizedKeys.keys = [keys.sam];

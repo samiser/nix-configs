@@ -1,29 +1,16 @@
 {
   pkgs,
   keys,
-  agenix,
+  sharedPackages,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-    dig
-    direnv
-    fd
-    fzf
-    git
-    htop
-    jq
-    pciutils
-    ripgrep
-    sysstat
-    tcpdump
-    tmux
-    tree
-    unzip
-    wget
-    wireguard-tools
-    zsh
-  ];
+  environment.systemPackages =
+    (sharedPackages.base {inherit pkgs;})
+    ++ (with pkgs; [
+      pciutils
+      sysstat
+      tcpdump
+    ]);
 
   services = {
     openssh.enable = true;
@@ -31,8 +18,6 @@
   };
 
   nix.package = pkgs.nixVersions.stable;
-
-  nixpkgs.config.allowUnfree = true;
 
   users.mutableUsers = false;
   programs.zsh.enable = true;

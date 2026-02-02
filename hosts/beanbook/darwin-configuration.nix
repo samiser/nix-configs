@@ -1,21 +1,15 @@
 {
   pkgs,
   my-neovim,
+  sharedPackages,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    _1password-cli
-    fd
-    my-neovim.packages.${stdenv.hostPlatform.system}.default
-    neofetch
-    ripgrep
-    tmux
-    tree
-    ffmpeg
-    colima
-    docker
-    claude-code
-  ];
+  environment.systemPackages =
+    (sharedPackages.all {inherit pkgs;})
+    ++ [
+      my-neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs.colima
+    ];
 
   sam = {
     services = {
@@ -69,8 +63,5 @@
     stateVersion = 6;
   };
 
-  nixpkgs = {
-    hostPlatform = "aarch64-darwin";
-    config.allowUnfree = true;
-  };
+  nixpkgs.hostPlatform = "aarch64-darwin";
 }

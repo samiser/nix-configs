@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  sharedPackages,
   ...
 }: {
   config = lib.mkIf config.host.profile.desktop {
@@ -22,34 +23,30 @@
     programs._1password.enable = true;
     programs._1password-gui.enable = true;
 
-    environment.systemPackages = with pkgs;
-      [
-        _1password-cli
+    environment.systemPackages =
+      (sharedPackages.desktop {inherit pkgs;})
+      ++ (with pkgs; [
+        # Linux-specific GUI and X11 tools
         acpi
         alacritty
         arandr
         chromium
         feh
-        ffmpeg
         ghostty.terminfo
         gimp
         godot_4
         gotop
-        imagemagick
         mpv
         mupdf
-        neofetch
         obsidian
         peek
         playerctl
         scrot
         xclip
-      ]
-      ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
         discord
         spotify
         steam
-      ];
+      ]);
 
     nixpkgs.config.permittedInsecurePackages = ["python-2.7.18.8" "electron-24.8.6"];
 

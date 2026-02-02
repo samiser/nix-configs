@@ -8,7 +8,6 @@
     (sharedPackages.all {inherit pkgs;})
     ++ [
       my-neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
-      pkgs.colima
     ];
 
   sam = {

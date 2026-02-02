@@ -16,12 +16,13 @@ in {
     users.sam = {
       imports = [
         agenix.homeManagerModules.default
-        ./hcloud.nix
         ./alacritty.nix
+        ./colima.nix
+        ./ghostty.nix
         ./git.nix
+        ./hcloud.nix
         ./i3
         ./neovim.nix
-        ./ghostty.nix
         ./zsh
       ];
 
@@ -40,6 +41,7 @@ in {
         git.enable = true;
         neovim.enable = true;
         ghostty.enable = pkgs.stdenv.isDarwin;
+        colima.enable = pkgs.stdenv.isDarwin;
         alacritty.enable = pkgs.stdenv.isLinux && gui;
         i3.enable = pkgs.stdenv.isLinux && gui;
       };

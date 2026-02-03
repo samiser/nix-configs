@@ -29,7 +29,6 @@
 
     taps = ["FelixKratz/formulae"];
     casks = [
-      "tailscale"
       "1password"
       "bitwig-studio"
       "colemak-dh"
@@ -41,8 +40,10 @@
       "google-chrome"
       "iina"
       "obsidian"
+      "prismlauncher"
       "raycast"
       "spotify"
+      "tailscale"
       "utm"
     ];
   };

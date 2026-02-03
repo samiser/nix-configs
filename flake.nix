@@ -25,7 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
+      url = "github:samiser/nix-minecraft/lazymc-module";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

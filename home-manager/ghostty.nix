@@ -9,6 +9,8 @@ in {
   options.sam.ghostty.enable = mkEnableOption "ghostty config";
 
   config = mkIf cfg.enable {
+    programs.ghostty.enable = true;
+    programs.ghostty.package = null;
     programs.ghostty.settings = {
       macos-titlebar-style = "hidden";
       window-padding-x = 5;

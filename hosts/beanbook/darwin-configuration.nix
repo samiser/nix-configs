@@ -8,6 +8,20 @@
     (sharedPackages.all {inherit pkgs;})
     ++ [
       my-neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs._1password-gui
+      pkgs.discord
+      pkgs.ghostty-bin
+      pkgs.godot
+      pkgs.google-chrome
+      pkgs.obsidian
+      pkgs.prismlauncher
+      pkgs.spotify
+    ]
+    ++ [
+      # macos specific
+      pkgs.utm
+      pkgs.raycast
+      pkgs.iina
     ];
 
   sam = {
@@ -23,28 +37,15 @@
     home = "/Users/sam";
   };
 
+  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono];
+
   homebrew = {
     enable = true;
     onActivation.cleanup = "zap";
 
     taps = ["FelixKratz/formulae"];
     casks = [
-      "1password"
-      "bitwig-studio"
-      "colemak-dh"
-      "discord"
-      "font-jetbrains-mono-nerd-font"
-      "ghostty"
-      "gimp"
-      "godot"
-      "google-chrome"
-      "iina"
-      "obsidian"
-      "prismlauncher"
-      "raycast"
-      "spotify"
       "tailscale"
-      "utm"
     ];
   };
 
@@ -64,4 +65,5 @@
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.config.allowUnfree = true;
 }

@@ -4,6 +4,23 @@
   ...
 }: let
   inherit (import ../../shared-modules/lib.nix) cloudflareTls;
+
+  # lazymc 0.2.11 in nixpkgs has a bug where it doesn't detect when the
+  # minecraft server finishes starting, causing clients to timeout while
+  # waiting. 0.2.10 doesn't have this issue.
+  # see: https://github.com/timvisee/lazymc/issues/65
+  lazymc = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "lazymc";
+    version = "0.2.10";
+    src = pkgs.fetchFromGitHub {
+      owner = "timvisee";
+      repo = "lazymc";
+      rev = "v${version}";
+      hash = "sha256-IObLjxuMJDjZ3M6M1DaPvmoRqAydbLKdpTQ3Vs+B9Oo=";
+    };
+    cargoHash = "sha256-Tx+Bof4NtVd7AlYMS6veLiT/9vBXPIRVpMecoW7SpfM=";
+    meta.mainProgram = "lazymc";
+  };
 in {
   imports = [
     nix-minecraft.nixosModules.minecraft-servers
@@ -75,6 +92,7 @@ in {
 
     minecraft-lazymc.servers.minecraft = {
       enable = true;
+      package = lazymc;
       publicAddress = "0.0.0.0:25565";
       openFirewall = true;
       extraConfig = {

@@ -58,6 +58,10 @@ in {
 
         operators = {
           "real_bean" = "ba5f35d3-c04a-4ec0-820c-14172299ea41";
+          "legoboomey" = "401835f5-b512-455a-9a0d-e09d9241542a";
+          "leafeater69" = "58312496-a917-4a6b-94ba-5fdc56af610b";
+          "AbbiePlum" = "500488ec-1774-4f91-b89e-fce1a4569165";
+          "Nightshroud" = "933c09bb-2de6-44a7-a9a2-866d48bf71ec";
         };
 
         symlinks = {
@@ -68,6 +72,10 @@ in {
           "plugins/bluemap.jar" = pkgs.fetchurl {
             url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v5.15/bluemap-5.15-paper.jar";
             sha256 = "sha256-FgWc3yM8CqDS2n2Lat0eOyCQfxokE0zCB/VX18Gy444=";
+          };
+          "plugins/worldedit.jar" = pkgs.fetchurl {
+            url = "https://hangarcdn.papermc.io/plugins/EngineHub/WorldEdit/versions/7.4.0/PAPER/worldedit-bukkit-7.4.0.jar";
+            sha256 = "sha256-KEGOxSIjeFrT3bD6u+00YOrLf9nXd0yEL0Q/tcf7STc=";
           };
           "plugins/BlueMap/webserver.conf" = pkgs.writeText "webserver.conf" ''
             enabled: true

@@ -40,4 +40,5 @@ builtins.mapAttrs (_: hostKeys: { publicKeys = [ sam ] ++ hostKeys; }) {
   "github-runner-sambee.age" = [ nix-lab ];
   "nixpkgs-update-token.age" = [ yidhra ];
   "nixpkgs-update-ssh-key.age" = [ yidhra ];
+  "valheim-password.age" = [ minecraft ];
 }

@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  mcEnabled = config.services.minecraft-servers.servers.minecraft.enable;
   backupDir = "/var/lib/minecraft-backups";
 
   backupScript = pkgs.writeShellScript "minecraft-backup" ''
@@ -21,7 +27,7 @@ let
   '';
 in
 {
-  systemd.services.minecraft-backup = {
+  systemd.services.minecraft-backup = lib.mkIf mcEnabled {
     description = "Minecraft World Backup";
     serviceConfig = {
       Type = "oneshot";
@@ -29,7 +35,7 @@ in
     };
   };
 
-  systemd.timers.minecraft-backup = {
+  systemd.timers.minecraft-backup = lib.mkIf mcEnabled {
     description = "Minecraft World Backup Timer";
     wantedBy = [ "timers.target" ];
     timerConfig = {

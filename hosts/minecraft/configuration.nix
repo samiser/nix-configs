@@ -3,6 +3,7 @@ _: {
     ../../nixos-modules/hetzner-cloud.nix
     ./minecraft-server.nix
     ./backup.nix
+    ./valheim-server.nix
   ];
 
   host = {

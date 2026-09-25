@@ -26,9 +26,13 @@ let
 
   workspaceKey = ws: if ws == "10" then "0" else ws;
 
-  # A bare number selects a position on the focused output, so every workspace names its own.
   workspaceSelector =
-    ws: "${ws}/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
+    ws: "\"${ws}\"/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
+
+  once = action: {
+    inherit action;
+    repeat = false;
+  };
 
   workspaceBinds = listToAttrs (
     map (
@@ -107,6 +111,7 @@ in
           };
           windows_out = {
             duration_ms = 300;
+            curve = "easeout";
             shader = "${shaders}/dither.glsl";
           };
         };
@@ -124,59 +129,64 @@ in
         };
 
         keybinds = {
-          "Mod+Return" = "spawn:${terminal}";
-          "Mod+W" = "spawn:${browser}";
-          "Mod+R" = "spawn:${menu}";
-          "Mod+Tab" = "spawn:noctalia msg window-switcher";
-          "Mod+E" = "spawn:noctalia msg session lock";
-          "Mod+Comma" = "spawn:noctalia msg settings-toggle";
-          "Mod+N" = "spawn:noctalia msg panel-toggle control-center";
-          "Mod+Space" = "spawn:wl-kbptr";
-          "Mod+X" = "spawn:${terminal} --class=com.samiser.clipse -e clipse";
+          "Mod+Return" = once "spawn:${terminal}";
+          "Mod+W" = once "spawn:${browser}";
+          "Mod+R" = once "spawn:${menu}";
+          "Mod+Tab" = once "spawn:noctalia msg window-switcher";
+          "Mod+E" = once "spawn:noctalia msg session lock";
+          "Mod+Comma" = once "spawn:noctalia msg settings-toggle";
+          "Mod+N" = once "spawn:noctalia msg panel-toggle control-center";
+          "Mod+Space" = once "spawn:wl-kbptr";
+          "Mod+X" = once "spawn:${terminal} --class=com.samiser.clipse -e clipse";
 
-          "Mod+Shift+Q" = "window-close";
-          "Mod+F" = "window-toggle-fullscreen";
-          "Mod+Shift+Space" = "window-toggle-floating";
-          "Mod+P" = "window-toggle-pinned";
+          "Mod+Shift+Q" = once "window-close";
+          "Mod+F" = once "window-toggle-fullscreen";
+          "Mod+Shift+Space" = once "window-toggle-floating";
+          "Mod+P" = once "window-toggle-pinned";
           "Mod+C" = "window-center";
 
-          "Mod+V" = "workspace-set-layout:toggle";
+          "Mod+V" = once "workspace-set-layout:toggle";
 
-          "Mod+O" = "overview-toggle";
-          "Mod+Slash" = "cheatsheet-toggle";
-          "Mod+Shift+C" = "config-reload";
-          "Mod+Shift+E" = "session-quit";
+          "Mod+O" = once "overview-toggle";
+          "Mod+Slash" = once "cheatsheet-toggle";
+          "Mod+Shift+C" = once "config-reload";
+          "Mod+Shift+E" = once "session-quit";
+          "Mod+Shift+Escape" = {
+            action = "shortcuts-inhibit-toggle";
+            allow_when_inhibited = true;
+            repeat = false;
+          };
 
-          "Mod+Left" = "window-focus-left";
-          "Mod+Right" = "window-focus-right";
-          "Mod+Up" = "window-focus-up";
-          "Mod+Down" = "window-focus-down";
+          "Mod+Left" = "window-focus-or-output-left";
+          "Mod+Right" = "window-focus-or-output-right";
+          "Mod+Up" = "window-focus-or-output-up";
+          "Mod+Down" = "window-focus-or-output-down";
 
-          "Mod+Shift+Left" = "column-move-left";
-          "Mod+Shift+Right" = "column-move-right";
-          "Mod+Shift+Up" = "window-move-up";
-          "Mod+Shift+Down" = "window-move-down";
+          "Mod+Shift+Left" = "window-move-or-output-left";
+          "Mod+Shift+Right" = "window-move-or-output-right";
+          "Mod+Shift+Up" = "window-move-or-output-up";
+          "Mod+Shift+Down" = "window-move-or-output-down";
 
-          "Mod+BracketLeft" = "output-focus-left";
-          "Mod+BracketRight" = "output-focus-right";
-          "Mod+Shift+BracketLeft" = "window-move-to-output-left";
-          "Mod+Shift+BracketRight" = "window-move-to-output-right";
+          "Mod+BracketLeft" = "output-focus-previous";
+          "Mod+BracketRight" = "output-focus-next";
+          "Mod+Shift+BracketLeft" = "window-move-to-output-previous";
+          "Mod+Shift+BracketRight" = "window-move-to-output-next";
 
           "Mod+Grave" = "scratchpad-toggle";
           "Mod+Shift+Grave" = "window-move-to-scratchpad";
           "Mod+Ctrl+Grave" = "window-restore-from-scratchpad";
 
-          "Mod+S" = screenshot "-g \"$(slurp)\" ";
-          "Mod+Shift+S" = screenshot "";
+          "Mod+S" = once (screenshot "-g \"$(slurp)\" ");
+          "Mod+Shift+S" = once (screenshot "");
 
           "XF86AudioRaiseVolume" = "spawn:noctalia msg volume-up";
           "XF86AudioLowerVolume" = "spawn:noctalia msg volume-down";
-          "XF86AudioMute" = "spawn:noctalia msg volume-mute";
-          "XF86AudioMicMute" = "spawn:noctalia msg mic-mute";
-          "XF86AudioNext" = "spawn:noctalia msg media next";
-          "XF86AudioPause" = "spawn:noctalia msg media toggle";
-          "XF86AudioPlay" = "spawn:noctalia msg media toggle";
-          "XF86AudioPrev" = "spawn:noctalia msg media previous";
+          "XF86AudioMute" = once "spawn:noctalia msg volume-mute";
+          "XF86AudioMicMute" = once "spawn:noctalia msg mic-mute";
+          "XF86AudioNext" = once "spawn:noctalia msg media next";
+          "XF86AudioPause" = once "spawn:noctalia msg media toggle";
+          "XF86AudioPlay" = once "spawn:noctalia msg media toggle";
+          "XF86AudioPrev" = once "spawn:noctalia msg media previous";
         }
         // workspaceBinds
         // workspaceMoveBinds;
@@ -185,10 +195,10 @@ in
           {
             match.app_id = "^com\\.samiser\\.clipse$";
             default_floating = true;
-            default_size = [
-              800
-              900
-            ];
+            default_floating_size_px = {
+              width = 800;
+              height = 900;
+            };
             default_position = {
               x = 0;
               y = 0;
@@ -197,19 +207,19 @@ in
           {
             match.app_id = "^dev.noctalia.Noctalia$";
             default_floating = true;
-            default_size = [
-              1020
-              900
-            ];
+            default_floating_size_px = {
+              width = 1020;
+              height = 900;
+            };
             blur_popups = false;
           }
           {
             match.app_id = "^dev.noctalia.UmbrielSharePicker$";
             default_floating = true;
-            default_size = [
-              800
-              600
-            ];
+            default_floating_size_px = {
+              width = 800;
+              height = 600;
+            };
             default_position = {
               x = 32;
               y = 32;
@@ -220,10 +230,10 @@ in
             match.title = "^Picture in picture$";
             default_floating = true;
             opacity = 0.9;
-            default_size = [
-              720
-              405
-            ];
+            default_floating_size_px = {
+              width = 720;
+              height = 405;
+            };
             default_output = landscape;
             default_position = {
               x = 10;

@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   osConfig,
@@ -40,6 +41,7 @@ let
       ws: nameValuePair "Mod+Shift+${workspaceKey ws}" "window-move-to-workspace:${workspaceSelector ws}"
     ) allWorkspaces
   );
+  shaders = "${config.home.homeDirectory}/umbriel-shaders";
   screenshot =
     grimArgs:
     "spawn:mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
@@ -95,6 +97,18 @@ in
           scale = 1.25;
           transform = "90";
           workspaces = portraitWorkspaces;
+        };
+
+        animation = {
+          workspaces = {
+            duration_ms = 300;
+            curve = "easeinout";
+            shader = "${shaders}/bijection-flow.glsl";
+          };
+          windows_out = {
+            duration_ms = 300;
+            shader = "${shaders}/dither.glsl";
+          };
         };
 
         input = {

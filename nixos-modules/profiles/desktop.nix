@@ -72,6 +72,7 @@
       mango.enable = true;
       umbriel.enable = true;
       noctalia.enable = true;
+      gpu-screen-recorder.enable = true;
 
       _1password.enable = true;
       _1password-gui.enable = true;

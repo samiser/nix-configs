@@ -39,6 +39,17 @@
     };
   };
 
+  networking = {
+    interfaces = {
+      enp4s0 = {
+        wakeOnLan.enable = true;
+      };
+    };
+    firewall = {
+      allowedUDPPorts = [ 9 ];
+    };
+  };
+
   networking.hostName = "yidhra";
 
   system.stateVersion = "26.05";

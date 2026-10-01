@@ -30,6 +30,7 @@
       packages = [
         { name = "hyprmag"; }
         { name = "noctalia-greeter"; }
+        { name = "omniwm"; }
         {
           name = "noctalia";
           versionPreference = "unstable";

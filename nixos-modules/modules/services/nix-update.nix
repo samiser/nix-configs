@@ -30,8 +30,8 @@ let
       pkgs.git
       pkgs.gnused
       pkgs.jq
-      pkgs.nix
-      pkgs.nix-update
+      config.nix.package
+      (pkgs.nix-update.override { nix = config.nix.package; })
       pkgs.openssh
     ];
     text = builtins.readFile ./nix-update-run.sh;
@@ -70,7 +70,7 @@ in
     githubUser = lib.mkOption {
       type = lib.types.str;
       description = ''
-        GitHub user whose nixpkgs fork update branches are pushed to.
+        GitHub user with nixpkgs fork and nixpkgs-review-gha fork.
       '';
     };
 
@@ -84,10 +84,7 @@ in
     sshKeyFile = lib.mkOption {
       type = lib.types.path;
       description = ''
-        Private key pushing update branches to the fork. Its public half needs
-        write access on the fork; a deploy key is enough. Pushing over ssh
-        rather than https keeps the token out of the `workflow` scope that
-        github demands of tokens whose pushes carry workflow file changes.
+        Private key pushing update branches to the fork.
       '';
     };
 
@@ -148,7 +145,7 @@ in
         TOKEN_FILE = cfg.tokenFile;
         CREATE_PRS = lib.boolToString cfg.createPullRequests;
         STATE_DIR = stateDir;
-        SYSTEM = pkgs.stdenv.hostPlatform.system;
+        NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM = "1";
 
         HOME = stateDir;
 

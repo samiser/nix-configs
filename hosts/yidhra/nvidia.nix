@@ -4,7 +4,7 @@
 
   hardware = {
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.new_feature;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
       open = true;
       modesetting.enable = true;
       powerManagement = {

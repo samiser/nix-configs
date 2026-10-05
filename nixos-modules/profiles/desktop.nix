@@ -54,6 +54,12 @@
         wl-kbptr = prev.wl-kbptr.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./wl-kbptr-pixman-stride.patch ];
         });
+        gpu-screen-recorder = prev.gpu-screen-recorder.overrideAttrs (old: {
+          postPatch = (old.postPatch or "") + ''
+            substituteInPlace src/codec_query/nvenc.c \
+              --replace-fail "NVENCAPI_PACKED_VERSION(13, 1)" "NVENCAPI_PACKED_VERSION(12, 1)"
+          '';
+        });
       })
     ];
 

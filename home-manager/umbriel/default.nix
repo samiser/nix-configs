@@ -68,6 +68,7 @@ in
             "clipse-listener"
           ];
           xwayland = true;
+          xwayland_native_resolution = true;
           show_cheatsheet = false;
         };
 
@@ -103,16 +104,27 @@ in
           workspaces = portraitWorkspaces;
         };
 
+        effects.preset = {
+          bijection-flow = {
+            kind = "animation";
+            shader = "${shaders}/bijection-flow.glsl";
+          };
+          dither = {
+            kind = "animation";
+            shader = "${shaders}/dither.glsl";
+          };
+        };
+
         animation = {
           workspaces = {
             duration_ms = 300;
             curve = "easeinout";
-            shader = "${shaders}/bijection-flow.glsl";
+            effect = "bijection-flow";
           };
           windows_out = {
             duration_ms = 300;
             curve = "easeout";
-            shader = "${shaders}/dither.glsl";
+            effect = "dither";
           };
         };
 

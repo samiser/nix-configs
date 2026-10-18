@@ -2,7 +2,6 @@
   pkgs,
   my-neovim,
   agenix,
-  mango,
   umbriel,
   ...
 }:
@@ -22,14 +21,12 @@
     users.sam = {
       imports = [
         agenix.homeManagerModules.default
-        mango.hmModules.mango
         umbriel.homeModules.default
         ./colima.nix
         ./ghostty.nix
         ./git.nix
         ./hcloud.nix
         ./neovim.nix
-        ./mango
         ./umbriel
         ./omniwm
         ./wl-kbptr.nix

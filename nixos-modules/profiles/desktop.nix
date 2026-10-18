@@ -2,14 +2,12 @@
   config,
   lib,
   pkgs,
-  mango,
   umbriel,
   waypak,
   ...
 }:
 {
   imports = [
-    mango.nixosModules.mango
     umbriel.nixosModules.default
   ];
 
@@ -75,7 +73,6 @@
 
     programs = {
       hyprland.enable = true;
-      mango.enable = true;
       umbriel.enable = true;
       noctalia.enable = true;
       gpu-screen-recorder.enable = true;

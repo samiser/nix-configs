@@ -29,7 +29,7 @@ in
 
     services.caddy.package = pkgs.caddy.withPlugins {
       plugins = [ "github.com/caddy-dns/cloudflare@v0.2.2" ];
-      hash = "sha256-UPd4CWjm8Cq5EZ9OkBCglE23hD8+przFBSw8Ey6zMz8=";
+      hash = "sha256-icoMGmEKr+RTfru4YrUH6rFKJTlj9Jkt82Cti3MeKSM=";
     };
   };
 }

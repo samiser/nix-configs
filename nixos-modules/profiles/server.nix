@@ -7,10 +7,7 @@
 }:
 {
   config = lib.mkIf config.host.profile.server {
-    boot = {
-      tmp.cleanOnBoot = true;
-      initrd.systemd.enable = true;
-    };
+    boot.tmp.cleanOnBoot = true;
     zramSwap.enable = true;
 
     nix = {

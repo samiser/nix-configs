@@ -48,6 +48,7 @@
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
     nixpkgs.overlays = [
+      (import ../../pkgs)
       (_final: prev: {
         wl-kbptr = prev.wl-kbptr.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./wl-kbptr-pixman-stride.patch ];
@@ -111,6 +112,7 @@
         commandLineArgs = "--disable-features=WaylandFractionalScaleV1";
       })
       grim
+      hyperline
       imv
       mpv
       mupdf
@@ -118,6 +120,7 @@
       pavucontrol
       playerctl
       slurp
+      statlocker-companion
       wdisplays
       wf-recorder
       wl-clipboard

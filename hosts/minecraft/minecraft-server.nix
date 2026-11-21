@@ -26,7 +26,7 @@ in
       eula = true;
 
       servers.minecraft = {
-        enable = false;
+        enable = true;
         package = pkgs.paperServers.paper;
         openFirewall = true;
 

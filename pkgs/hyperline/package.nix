@@ -1,7 +1,10 @@
 {
   lib,
   stdenv,
-  requireFile,
+  fetchurl,
+  curl,
+  nix-update,
+  writeShellScript,
   copyDesktopItems,
   makeDesktopItem,
   libglvnd,
@@ -14,12 +17,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "hyperline";
-  version = "0.2.116";
+  version = "0.2.145";
 
-  src = requireFile {
-    name = "hyperline-linux-amd64.tar.gz";
-    url = "https://hyperline.gg/download/linux";
-    hash = "sha256-HBG0VTHCVbHoE+4miSJBmTP2a7/xOch/kUWrkiBL8PA=";
+  src = fetchurl {
+    url = "https://cdn.hyperline.gg/download/${finalAttrs.version}/hyperline-linux-amd64.tar.gz";
+    hash = "sha256-Q+8qOOxcOi5kVC5d93IK6p6K2FAtAqy3nWplV01OyHU=";
   };
 
   sourceRoot = ".";
@@ -59,6 +61,12 @@ stdenv.mkDerivation (finalAttrs: {
       mimeTypes = [ "x-scheme-handler/hyperline" ];
     })
   ];
+
+  passthru.updateScript = writeShellScript "update-hyperline" ''
+    set -eu
+    version=$(${lib.getExe curl} -fsSI -o /dev/null -w '%{redirect_url}' https://hyperline.gg/download/linux | sed -E 's#.*/download/([^/]+)/.*#\1#')
+    exec ${lib.getExe nix-update} hyperline --version "$version"
+  '';
 
   meta = {
     description = "Tray app for playing custom Deadlock games with friends";

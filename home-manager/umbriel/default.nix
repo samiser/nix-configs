@@ -27,7 +27,7 @@ let
   workspaceKey = ws: if ws == "10" then "0" else ws;
 
   workspaceSelector =
-    ws: "\"${ws}\"/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
+    ws: "--name ${ws} --output ${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
 
   once = action: {
     inherit action;
@@ -36,19 +36,19 @@ let
 
   workspaceBinds = listToAttrs (
     map (
-      ws: nameValuePair "Mod+${workspaceKey ws}" "workspace-switch:${workspaceSelector ws}"
+      ws: nameValuePair "Mod+${workspaceKey ws}" "workspace-switch ${workspaceSelector ws}"
     ) allWorkspaces
   );
 
   workspaceMoveBinds = listToAttrs (
     map (
-      ws: nameValuePair "Mod+Shift+${workspaceKey ws}" "window-move-to-workspace:${workspaceSelector ws}"
+      ws: nameValuePair "Mod+Shift+${workspaceKey ws}" "window-move-to-workspace ${workspaceSelector ws}"
     ) allWorkspaces
   );
   shaders = "${config.home.homeDirectory}/umbriel-shaders";
   screenshot =
     grimArgs:
-    "spawn:mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
+    "spawn mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
 in
 {
   config = mkIf (pkgs.stdenv.hostPlatform.isLinux && osConfig.host.profile.desktop) {
@@ -133,7 +133,7 @@ in
             layout = "us";
             options = "compose:menu";
           };
-          focus.follows_mouse = true;
+          focus.follows_mouse = "sloppy";
           cursor = {
             hide_when_typing = true;
             hide_timeout_ms = 3000;
@@ -141,15 +141,15 @@ in
         };
 
         keybinds = {
-          "Mod+Return" = once "spawn:${terminal}";
-          "Mod+W" = once "spawn:${browser}";
-          "Mod+R" = once "spawn:${menu}";
-          "Mod+Tab" = once "spawn:noctalia msg window-switcher";
-          "Mod+E" = once "spawn:noctalia msg session lock";
-          "Mod+Comma" = once "spawn:noctalia msg settings-toggle";
-          "Mod+N" = once "spawn:noctalia msg panel-toggle control-center";
-          "Mod+Space" = once "spawn:wl-kbptr";
-          "Mod+X" = once "spawn:${terminal} --class=com.samiser.clipse -e clipse";
+          "Mod+Return" = once "spawn ${terminal}";
+          "Mod+W" = once "spawn ${browser}";
+          "Mod+R" = once "spawn ${menu}";
+          "Mod+Tab" = once "spawn noctalia msg window-switcher";
+          "Mod+E" = once "spawn noctalia msg session lock";
+          "Mod+Comma" = once "spawn noctalia msg settings-toggle";
+          "Mod+N" = once "spawn noctalia msg panel-toggle control-center";
+          "Mod+Space" = once "spawn wl-kbptr";
+          "Mod+X" = once "spawn ${terminal} --class=com.samiser.clipse -e clipse";
 
           "Mod+Shift+Q" = once "window-close";
           "Mod+F" = once "window-toggle-fullscreen";
@@ -157,7 +157,7 @@ in
           "Mod+P" = once "window-toggle-pinned";
           "Mod+C" = "window-center";
 
-          "Mod+V" = once "workspace-set-layout:toggle";
+          "Mod+V" = once "workspace-set-layout toggle";
 
           "Mod+O" = once "overview-toggle";
           "Mod+Slash" = once "cheatsheet-toggle";
@@ -191,14 +191,14 @@ in
           "Mod+S" = once (screenshot "-g \"$(slurp)\" ");
           "Mod+Shift+S" = once (screenshot "");
 
-          "XF86AudioRaiseVolume" = "spawn:noctalia msg volume-up";
-          "XF86AudioLowerVolume" = "spawn:noctalia msg volume-down";
-          "XF86AudioMute" = once "spawn:noctalia msg volume-mute";
-          "XF86AudioMicMute" = once "spawn:noctalia msg mic-mute";
-          "XF86AudioNext" = once "spawn:noctalia msg media next";
-          "XF86AudioPause" = once "spawn:noctalia msg media toggle";
-          "XF86AudioPlay" = once "spawn:noctalia msg media toggle";
-          "XF86AudioPrev" = once "spawn:noctalia msg media previous";
+          "XF86AudioRaiseVolume" = "spawn noctalia msg volume-up";
+          "XF86AudioLowerVolume" = "spawn noctalia msg volume-down";
+          "XF86AudioMute" = once "spawn noctalia msg volume-mute";
+          "XF86AudioMicMute" = once "spawn noctalia msg mic-mute";
+          "XF86AudioNext" = once "spawn noctalia msg media next";
+          "XF86AudioPause" = once "spawn noctalia msg media toggle";
+          "XF86AudioPlay" = once "spawn noctalia msg media toggle";
+          "XF86AudioPrev" = once "spawn noctalia msg media previous";
         }
         // workspaceBinds
         // workspaceMoveBinds;
